@@ -1,9 +1,13 @@
 package br.com.helloticket.api.resource;
 
+import br.com.helloticket.api.event.RecursoCriado;
 import br.com.helloticket.api.model.Cadastro;
 import br.com.helloticket.api.repository.CadastroRepository;
+import br.com.helloticket.api.service.CadastroService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +26,12 @@ public class CadastroResource {
     @Autowired
     private CadastroRepository cadastroRepository;
 
+    @Autowired
+    private ApplicationEventPublisher publisher;
+
+    @Autowired
+    private CadastroService cadastroService;
+
     @GetMapping
     public List<Cadastro> listar(){
 
@@ -29,11 +39,10 @@ public class CadastroResource {
     }
 
     @PostMapping
-    public ResponseEntity<Cadastro> criar(@RequestBody Cadastro cadastro, HttpServletResponse response){
+    public ResponseEntity<Cadastro> criar(@Valid @RequestBody Cadastro cadastro, HttpServletResponse response){
         Cadastro cadastroSalva = cadastroRepository.save(cadastro);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(cadastro.getId()).toUri();
-        response.setHeader("Location", uri.toASCIIString());
-        return ResponseEntity.created(uri).body(cadastroSalva);
+        publisher.publishEvent(new RecursoCriado(this, response, cadastroSalva.getId()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(cadastroSalva);
     }
 
     @GetMapping("/{id}")
@@ -49,10 +58,8 @@ public class CadastroResource {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Cadastro> atualizar(@PathVariable long id, @RequestBody Cadastro cadastro){
-        Cadastro cadastroSalva = cadastroRepository.findById(id);
-        BeanUtils.copyProperties(cadastro, cadastroSalva, "id", "dataCadastro", "dataSituacao");
-        cadastroRepository.save(cadastroSalva);
+    public ResponseEntity<Cadastro> atualizar(@PathVariable long id, @Valid @RequestBody Cadastro cadastro){
+        Cadastro cadastroSalva = cadastroService.atualizar(id, cadastro);
         return ResponseEntity.ok(cadastroSalva);
     }
 }

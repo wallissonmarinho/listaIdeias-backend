@@ -1,6 +1,8 @@
 package br.com.helloticket.api.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -14,14 +16,18 @@ public class Cadastro {
 
     private String nome;
 
+    @NotNull
+    @Size(min = 3, max = 50)
     private String descricao;
 
-    @Enumerated(EnumType.STRING)
+    @NotNull
+    @Enumerated(EnumType.ORDINAL)
     private Viabilidade viabilidade;
 
     @Enumerated(EnumType.STRING)
     private Situacao situacao;
 
+    @NotNull
     @Column(name = "data_cadastro")
     private LocalDate dataCadastro;
 
@@ -52,16 +58,16 @@ public class Cadastro {
         this.descricao = descricao;
     }
 
-    public Viabilidade getViabilidade() {
-        return viabilidade;
+    public int getViabilidade() {
+        return viabilidade.getCode();
     }
 
     public void setViabilidade(Viabilidade viabilidade) {
         this.viabilidade = viabilidade;
     }
 
-    public Situacao getSituacao() {
-        return situacao;
+    public String getSituacao() {
+        return situacao.getCode();
     }
 
     public void setSituacao(Situacao situacao) {
