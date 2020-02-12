@@ -21,7 +21,7 @@ public class Cadastro {
     private String descricao;
 
     @NotNull
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private Viabilidade viabilidade;
 
     @Enumerated(EnumType.STRING)
@@ -58,7 +58,7 @@ public class Cadastro {
         this.descricao = descricao;
     }
 
-    public int getViabilidade() {
+    public String getViabilidade() {
         return viabilidade.getCode();
     }
 

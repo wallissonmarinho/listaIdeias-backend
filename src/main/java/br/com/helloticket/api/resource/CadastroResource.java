@@ -3,6 +3,7 @@ package br.com.helloticket.api.resource;
 import br.com.helloticket.api.event.RecursoCriado;
 import br.com.helloticket.api.model.Cadastro;
 import br.com.helloticket.api.repository.CadastroRepository;
+import br.com.helloticket.api.repository.filter.CadastroFilter;
 import br.com.helloticket.api.service.CadastroService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +34,9 @@ public class CadastroResource {
     private CadastroService cadastroService;
 
     @GetMapping
-    public List<Cadastro> listar(){
+    public List<Cadastro> pesquisar(CadastroFilter cadastroFilter){
 
-        return cadastroRepository.findAll();
+        return cadastroRepository.filtrar(cadastroFilter);
     }
 
     @PostMapping
