@@ -41,7 +41,7 @@ public class CadastroRepositoryImpl implements CadastroRepositoryQuery {
         }
 
         if (!StringUtils.isEmpty(cadastroFilter.getViabilidade())){
-            predicates.add(builder.like(builder.lower(root.get("viabilidade")), "%" + cadastroFilter.getSituacao().toLowerCase() + "%"));
+            predicates.add(builder.like(builder.lower(root.get("viabilidade")), "%" + cadastroFilter.getViabilidade().toLowerCase() + "%"));
         }
 
 

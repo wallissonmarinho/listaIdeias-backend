@@ -21,11 +21,9 @@ public class Cadastro {
     private String descricao;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
-    private Viabilidade viabilidade;
+    private String viabilidade;
 
-    @Enumerated(EnumType.STRING)
-    private Situacao situacao;
+    private String situacao;
 
     @NotNull
     @Column(name = "data_cadastro")
@@ -59,18 +57,18 @@ public class Cadastro {
     }
 
     public String getViabilidade() {
-        return viabilidade.getCode();
+        return viabilidade;
     }
 
-    public void setViabilidade(Viabilidade viabilidade) {
+    public void setViabilidade(String viabilidade) {
         this.viabilidade = viabilidade;
     }
 
     public String getSituacao() {
-        return situacao.getCode();
+        return situacao;
     }
 
-    public void setSituacao(Situacao situacao) {
+    public void setSituacao(String situacao) {
         this.situacao = situacao;
     }
 
