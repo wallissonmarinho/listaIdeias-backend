@@ -6,12 +6,15 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import static javax.persistence.GenerationType.SEQUENCE;
+
 @Entity
+@SequenceGenerator(name = "cadastro_id_seq", sequenceName = "cadastro_id_seq", allocationSize = 1, initialValue = 1)
 @Table(name = "cadastro")
 public class Cadastro {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = "cadastro_id_seq")
     private Long id;
 
     private String nome;
